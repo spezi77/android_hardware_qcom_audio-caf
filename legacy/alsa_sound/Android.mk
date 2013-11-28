@@ -138,7 +138,7 @@ include $(CLEAR_VARS)
 
 LOCAL_ARM_MODE := arm
 
-LOCAL_CFLAGS += $(common_cflags)
+LOCAL_CFLAGS += $(common_cflags) -Wno-strict-aliasing
 
 LOCAL_SRC_FILES := \
   AudioHardwareALSA.cpp         \
