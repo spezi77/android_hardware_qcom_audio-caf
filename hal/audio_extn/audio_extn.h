@@ -40,11 +40,15 @@ bool audio_extn_should_use_handset_anc(int in_channels);
 #endif
 
 #ifndef AFE_PROXY_ENABLED
-#define audio_extn_set_afe_proxy_channel_mixer(adev)     (0)
-#define audio_extn_read_afe_proxy_channel_masks(out)     (0)
+#define audio_extn_set_afe_proxy_channel_mixer(adev,channel_count)     (0)
+#define audio_extn_read_afe_proxy_channel_masks(out)                   (0)
+#define audio_extn_get_afe_proxy_channel_count()                       (0)
 #else
-int32_t audio_extn_set_afe_proxy_channel_mixer(struct audio_device *adev);
+int32_t audio_extn_set_afe_proxy_channel_mixer(struct audio_device *adev,
+                                                    int channel_count);
 int32_t audio_extn_read_afe_proxy_channel_masks(struct stream_out *out);
+int32_t audio_extn_get_afe_proxy_channel_count();
+
 #endif
 
 #ifndef USB_HEADSET_ENABLED
@@ -53,7 +57,7 @@ int32_t audio_extn_read_afe_proxy_channel_masks(struct stream_out *out);
 #define audio_extn_usb_start_playback(adev)              (0)
 #define audio_extn_usb_stop_playback()                   (0)
 #define audio_extn_usb_start_capture(adev)               (0)
-#define audio_extn_usb_stop_capture()                    (0)
+#define audio_extn_usb_stop_capture(adev)                (0)
 #define audio_extn_usb_set_proxy_sound_card(sndcard_idx) (0)
 #define audio_extn_usb_is_proxy_inuse()                  (0)
 #else
@@ -62,7 +66,7 @@ void audio_extn_usb_deinit();
 void audio_extn_usb_start_playback(void *adev);
 void audio_extn_usb_stop_playback();
 void audio_extn_usb_start_capture(void *adev);
-void audio_extn_usb_stop_capture();
+void audio_extn_usb_stop_capture(void *adev);
 void audio_extn_usb_set_proxy_sound_card(uint32_t sndcard_idx);
 bool audio_extn_usb_is_proxy_inuse();
 #endif
