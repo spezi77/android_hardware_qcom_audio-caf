@@ -113,6 +113,7 @@ enum {
     SND_DEVICE_IN_VOICE_TTY_FULL_HEADSET_MIC,
     SND_DEVICE_IN_VOICE_TTY_VCO_HANDSET_MIC,
     SND_DEVICE_IN_VOICE_TTY_HCO_HEADSET_MIC,
+    SND_DEVICE_IN_VOICE_REC_HEADSET_MIC,
     SND_DEVICE_IN_VOICE_REC_MIC,
     SND_DEVICE_IN_VOICE_REC_MIC_NS,
     SND_DEVICE_IN_VOICE_REC_DMIC_STEREO,
@@ -136,7 +137,7 @@ enum {
 #define DEFAULT_OUTPUT_SAMPLING_RATE 48000
 
 #define ALL_SESSION_VSID                0xFFFFFFFF
-#define DEFAULT_MUTE_RAMP_DURATION      500
+#define DEFAULT_MUTE_RAMP_DURATION_MS   20
 #define DEFAULT_VOLUME_RAMP_DURATION_MS 20
 #define MIXER_PATH_MAX_LENGTH 100
 
@@ -181,7 +182,7 @@ enum {
 #define INCALL_MUSIC_UPLINK_PCM_DEVICE 1
 #define INCALL_MUSIC_UPLINK2_PCM_DEVICE 16
 #define SPKR_PROT_CALIB_RX_PCM_DEVICE 5
-#define SPKR_PROT_CALIB_TX_PCM_DEVICE 25
+#define SPKR_PROT_CALIB_TX_PCM_DEVICE 32
 #define PLAYBACK_OFFLOAD_DEVICE 9
 #define COMPRESS_VOIP_CALL_PCM_DEVICE 3
 
@@ -225,9 +226,10 @@ enum {
 typedef int (*init_t)();
 typedef int (*deinit_t)();
 typedef int (*disable_device_t)();
+typedef int (*enable_device_config_t)(int, int);
 typedef int (*enable_device_t)(int, int, uint32_t);
-typedef int (*volume_t)(uint32_t, int);
-typedef int (*mic_mute_t)(uint32_t, int);
+typedef int (*volume_t)(uint32_t, int, uint16_t);
+typedef int (*mic_mute_t)(uint32_t, int, uint16_t);
 typedef int (*slow_talk_t)(uint32_t, uint8_t);
 typedef int (*start_voice_t)(uint32_t);
 typedef int (*stop_voice_t)(uint32_t);
@@ -241,6 +243,7 @@ struct csd_data {
     init_t init;
     deinit_t deinit;
     disable_device_t disable_device;
+    enable_device_config_t enable_device_config;
     enable_device_t enable_device;
     volume_t volume;
     mic_mute_t mic_mute;
@@ -284,7 +287,5 @@ struct platform_data {
 };/* Audio calibration related functions */
 #define SAMPLE_RATE_8KHZ  8000
 #define SAMPLE_RATE_16KHZ 16000
-int set_echo_reference(struct mixer *mixer, const char* ec_ref);
-
 
 #endif // QCOM_AUDIO_PLATFORM_H

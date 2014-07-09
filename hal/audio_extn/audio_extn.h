@@ -61,6 +61,7 @@ int32_t audio_extn_get_afe_proxy_channel_count();
 #define audio_extn_usb_set_proxy_sound_card(sndcard_idx) (0)
 #define audio_extn_usb_is_proxy_inuse()                  (0)
 #else
+void initPlaybackVolume();
 void audio_extn_usb_init(void *adev);
 void audio_extn_usb_deinit();
 void audio_extn_usb_start_playback(void *adev);
@@ -188,8 +189,10 @@ void audio_extn_dolby_send_ddp_endp_params(struct audio_device *adev);
 
 #ifndef HFP_ENABLED
 #define audio_extn_hfp_is_active(adev)                  (0)
+#define audio_extn_hfp_get_usecase()                    (0)
 #else
 bool audio_extn_hfp_is_active(struct audio_device *adev);
+audio_usecase_t audio_extn_hfp_get_usecase();
 #endif
 
 #endif /* AUDIO_EXTN_H */
