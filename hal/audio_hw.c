@@ -3130,23 +3130,6 @@ static int adev_open(const hw_module_t *module, const char *name,
         }
     }
 
-    if (access(OFFLOAD_EFFECTS_BUNDLE_LIBRARY_PATH, R_OK) == 0) {
-        adev->offload_effects_lib = dlopen(OFFLOAD_EFFECTS_BUNDLE_LIBRARY_PATH, RTLD_NOW);
-        if (adev->offload_effects_lib == NULL) {
-            ALOGE("%s: DLOPEN failed for %s", __func__,
-                  OFFLOAD_EFFECTS_BUNDLE_LIBRARY_PATH);
-        } else {
-            ALOGV("%s: DLOPEN successful for %s", __func__,
-                  OFFLOAD_EFFECTS_BUNDLE_LIBRARY_PATH);
-            adev->offload_effects_start_output =
-                        (int (*)(audio_io_handle_t, int))dlsym(adev->offload_effects_lib,
-                                         "offload_effects_bundle_hal_start_output");
-            adev->offload_effects_stop_output =
-                        (int (*)(audio_io_handle_t, int))dlsym(adev->offload_effects_lib,
-                                         "offload_effects_bundle_hal_stop_output");
-        }
-    }
-
     *device = &adev->device.common;
 
     audio_device_ref_count++;
